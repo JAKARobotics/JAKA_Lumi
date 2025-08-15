@@ -1,7 +1,0 @@
-float64[] cartesian_pose  # 笛卡尔空间位姿 (x, y, z, rx, ry, rz)
-float64[] ref_joint_pos   # 关节空间参考位置 [j1, j2, j3, j4, j5, j6, j7]
-int32 robot_arm_index  # -1 for dual arm, 0 for left, 1 for right
----
-int32 success
-string message
-float64[] joint_positions  # 计算得到的关节角度

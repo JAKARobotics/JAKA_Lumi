@@ -1,7 +1,0 @@
-LICENSE
-README.md
-setup.py
-build/act/act.egg-info/PKG-INFO
-build/act/act.egg-info/SOURCES.txt
-build/act/act.egg-info/dependency_links.txt
-build/act/act.egg-info/top_level.txt

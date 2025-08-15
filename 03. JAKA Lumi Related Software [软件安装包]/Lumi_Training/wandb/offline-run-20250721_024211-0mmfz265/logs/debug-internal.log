@@ -1,8 +1,0 @@
-{"time":"2025-07-21T02:42:11.244553926Z","level":"INFO","msg":"stream: starting","core version":"0.19.11","symlink path":"/root/ACT/wandb/offline-run-20250721_024211-0mmfz265/logs/debug-core.log"}
-{"time":"2025-07-21T02:42:11.354168731Z","level":"WARN","msg":"GraphQL client is nil, skipping feature loading"}
-{"time":"2025-07-21T02:42:11.354263533Z","level":"INFO","msg":"created new stream","id":"0mmfz265"}
-{"time":"2025-07-21T02:42:11.354279705Z","level":"INFO","msg":"stream: started","id":"0mmfz265"}
-{"time":"2025-07-21T02:42:11.354339035Z","level":"INFO","msg":"handler: started","stream_id":"0mmfz265"}
-{"time":"2025-07-21T02:42:11.35434322Z","level":"INFO","msg":"sender: started","stream_id":"0mmfz265"}
-{"time":"2025-07-21T02:42:11.354321256Z","level":"INFO","msg":"writer: Do: started","stream_id":"0mmfz265"}
-{"time":"2025-07-21T02:42:11.357899298Z","level":"INFO","msg":"Starting system monitor"}
