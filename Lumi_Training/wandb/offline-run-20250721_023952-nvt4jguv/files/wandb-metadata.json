@@ -1,0 +1,30 @@
+{
+  "os": "Linux-5.15.0-143-generic-x86_64-with-glibc2.35",
+  "python": "CPython 3.10.12",
+  "startedAt": "2025-07-21T02:39:52.813551Z",
+  "program": "/root/ACT/train.py",
+  "codePath": "train.py",
+  "git": {
+    "remote": "http://git01.jaka.com/AI_Group/ACT.git",
+    "commit": "3f9aad2bf3da4c685de746893cf388216480f3b3"
+  },
+  "root": "/root/ACT",
+  "host": "server",
+  "executable": "/usr/bin/python3",
+  "codePathLocal": "train.py",
+  "cpu_count": 48,
+  "cpu_count_logical": 96,
+  "disk": {
+    "/": {
+      "total": "99603628285952",
+      "used": "1475114692608"
+    }
+  },
+  "memory": {
+    "total": "270111137792"
+  },
+  "cpu": {
+    "count": 48,
+    "countLogical": 96
+  }
+}

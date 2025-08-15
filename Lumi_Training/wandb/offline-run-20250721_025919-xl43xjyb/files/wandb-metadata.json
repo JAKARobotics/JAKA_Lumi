@@ -1,0 +1,47 @@
+{
+  "os": "Linux-5.15.0-143-generic-x86_64-with-glibc2.35",
+  "python": "CPython 3.10.12",
+  "startedAt": "2025-07-21T02:59:19.284573Z",
+  "program": "/root/Lumi_Training/train.py",
+  "codePath": "train.py",
+  "git": {
+    "remote": "http://git01.jaka.com/AI_Group/Lumi_Training.git",
+    "commit": "8b83235f077222f562fd4508d6594367451914ad"
+  },
+  "root": "/root/Lumi_Training",
+  "host": "server",
+  "executable": "/usr/bin/python3",
+  "codePathLocal": "train.py",
+  "cpu_count": 48,
+  "cpu_count_logical": 96,
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "gpu_count": 2,
+  "disk": {
+    "/": {
+      "total": "99603628285952",
+      "used": "1475150319616"
+    }
+  },
+  "memory": {
+    "total": "270111137792"
+  },
+  "cpu": {
+    "count": 48,
+    "countLogical": 96
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA GeForce RTX 4090",
+      "memoryTotal": "51527024640",
+      "cudaCores": 16384,
+      "architecture": "Ada"
+    },
+    {
+      "name": "NVIDIA L20",
+      "memoryTotal": "48305799168",
+      "cudaCores": 11776,
+      "architecture": "Ada"
+    }
+  ],
+  "cudaVersion": "12.4"
+}

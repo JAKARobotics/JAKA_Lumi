@@ -1,0 +1,348 @@
+import torch
+import numpy as np
+import os
+import pickle
+import argparse
+import matplotlib.pyplot as plt
+from copy import deepcopy
+from itertools import repeat
+
+from pygments.lexer import default
+from tqdm import tqdm
+from einops import rearrange
+import wandb
+import time
+from torchvision import transforms
+
+from constants import FPS
+from constants import PUPPET_GRIPPER_JOINT_OPEN
+from utils import load_data  # data functions
+from utils import sample_box_pose, sample_insertion_pose  # robot functions
+from utils import compute_dict_mean, set_seed, detach_dict, calibrate_linear_vel, \
+    postprocess_base_action  # helper functions
+from policy import ACTPolicy, CNNMLPPolicy,DiffusionPolicy
+from visualize_episodes import save_videos
+
+from detr.models.latent_model import Latent_Model_Transformer
+
+from sim_env import BOX_POSE
+
+import IPython
+
+e = IPython.embed
+
+
+def get_auto_index(dataset_dir):
+    max_idx = 1000
+    for i in range(max_idx + 1):
+        if not os.path.isfile(os.path.join(dataset_dir, f'qpos_{i}.npy')):
+            return i
+    raise Exception(f"Error getting auto index, or more than {max_idx} episodes")
+
+
+def main(args):
+    set_seed(1)
+    # command line parameters
+    is_eval = args['eval']
+    ckpt_dir = args['ckpt_dir']
+    policy_class = args['policy_class']
+    onscreen_render = args['onscreen_render']
+    task_name = args['task_name']
+    batch_size_train = args['batch_size']
+    batch_size_val = args['batch_size']
+    num_steps = args['num_steps']
+    eval_every = args['eval_every']
+    validate_every = args['validate_every']
+    save_every = args['save_every']
+    resume_ckpt_path = args['resume_ckpt_path']
+
+    from constants import SIM_TASK_CONFIGS
+    task_config = SIM_TASK_CONFIGS[task_name]
+    dataset_dir = task_config['dataset_dir']
+    # num_episodes = task_config['num_episodes']
+    episode_len = task_config['episode_len']
+    camera_names = task_config['camera_names']
+    stats_dir = task_config.get('stats_dir', None)
+    sample_weights = task_config.get('sample_weights', None)
+    train_ratio = task_config.get('train_ratio', 0.99)
+    name_filter = task_config.get('name_filter', lambda n: True)
+
+    # fixed parameters
+    state_dim = 7
+    lr_backbone = 1e-5
+    backbone = 'resnet18'
+    policy_config = {'lr': args['lr'],
+                         'camera_names': camera_names,
+                         'action_dim': 7,
+                         'observation_horizon': 1,
+                         'action_horizon': 8,
+                         'prediction_horizon': args['chunk_size'],
+                         'num_queries': args['chunk_size'],
+                         'num_inference_timesteps': 10,
+                         'ema_power': 0.75,
+                         'vq': False,
+                         }
+
+    config = {
+        'num_steps': num_steps,
+        'eval_every': eval_every,
+        'validate_every': validate_every,
+        'save_every': save_every,
+        'ckpt_dir': ckpt_dir,
+        'resume_ckpt_path': resume_ckpt_path,
+        'episode_len': episode_len,
+        'state_dim': state_dim,
+        'lr': args['lr'],
+        'policy_class': policy_class,
+        'onscreen_render': onscreen_render,
+        'policy_config': policy_config,
+        'task_name': task_name,
+        'seed': args['seed'],
+        'temporal_agg': args['temporal_agg'],
+        'camera_names': camera_names,
+        'real_robot': True,
+        'load_pretrain': args['load_pretrain'],
+    }
+
+    if not os.path.isdir(ckpt_dir):
+        os.makedirs(ckpt_dir)
+    config_path = os.path.join(ckpt_dir, 'config.pkl')
+    expr_name = ckpt_dir.split('/')[-1]
+    with open(config_path, 'wb') as f:
+        pickle.dump(config, f)
+    eval_bc(config, 'policy_best.ckpt', save_episode=True, num_rollouts=1)
+def make_policy(policy_class, policy_config):
+    if policy_class == 'ACT':
+        policy = ACTPolicy(policy_config)
+    elif policy_class == 'CNNMLP':
+        policy = CNNMLPPolicy(policy_config)
+    elif policy_class == 'Diffusion':
+        policy = DiffusionPolicy(policy_config)
+    else:
+        raise NotImplementedError
+    return policy
+
+
+def make_optimizer(policy_class, policy):
+    if policy_class == 'ACT':
+        optimizer = policy.configure_optimizers()
+    elif policy_class == 'CNNMLP':
+        optimizer = policy.configure_optimizers()
+    elif policy_class == 'Diffusion':
+        optimizer = policy.configure_optimizers()
+    else:
+        raise NotImplementedError
+    return optimizer
+
+
+def get_image(ts, camera_names, rand_crop_resize=False):
+    curr_images = []
+    for cam_name in camera_names:
+        curr_image = rearrange(ts.observation['images'][cam_name], 'h w c -> c h w')
+        curr_images.append(curr_image)
+    curr_image = np.stack(curr_images, axis=0)
+    curr_image = torch.from_numpy(curr_image / 255.0).float().cuda().unsqueeze(0)
+
+    if rand_crop_resize:
+        print('rand crop resize is used!')
+        original_size = curr_image.shape[-2:]
+        ratio = 0.95
+        curr_image = curr_image[..., int(original_size[0] * (1 - ratio) / 2): int(original_size[0] * (1 + ratio) / 2),
+                     int(original_size[1] * (1 - ratio) / 2): int(original_size[1] * (1 + ratio) / 2)]
+        curr_image = curr_image.squeeze(0)
+        resize_transform = transforms.Resize(original_size, antialias=True)
+        curr_image = resize_transform(curr_image)
+        curr_image = curr_image.unsqueeze(0)
+
+    return curr_image
+
+
+def eval_bc(config, ckpt_name, save_episode=True, num_rollouts=50):
+    set_seed(0)
+    ckpt_dir = config['ckpt_dir']
+    state_dim = config['state_dim']
+    real_robot = config['real_robot']
+    policy_class = config['policy_class']
+    onscreen_render = config['onscreen_render']
+    policy_config = config['policy_config']
+    camera_names = config['camera_names']
+    max_timesteps = config['episode_len']
+    task_name = config['task_name']
+    temporal_agg = config['temporal_agg']
+    onscreen_cam = 'angle'
+    vq = config['policy_config']['vq']
+    actuator_config = config['actuator_config']
+    use_actuator_net = actuator_config['actuator_network_dir'] is not None
+
+    # load policy and stats
+    ckpt_path = os.path.join(ckpt_dir, ckpt_name)
+    policy = make_policy(policy_class, policy_config)
+    loading_status = policy.deserialize(torch.load(ckpt_path))
+    print(loading_status)
+    policy.cuda()
+    policy.eval()
+    if vq:
+        vq_dim = config['policy_config']['vq_dim']
+        vq_class = config['policy_config']['vq_class']
+        latent_model = Latent_Model_Transformer(vq_dim, vq_dim, vq_class)
+        latent_model_ckpt_path = os.path.join(ckpt_dir, 'latent_model_last.ckpt')
+        latent_model.deserialize(torch.load(latent_model_ckpt_path))
+        latent_model.eval()
+        latent_model.cuda()
+        print(f'Loaded policy from: {ckpt_path}, latent model from: {latent_model_ckpt_path}')
+    else:
+        print(f'Loaded: {ckpt_path}')
+    stats_path = os.path.join(ckpt_dir, f'dataset_stats.pkl')
+    with open(stats_path, 'rb') as f:
+        stats = pickle.load(f)
+
+    pre_process = lambda s_qpos: (s_qpos - stats['qpos_mean']) / stats['qpos_std']
+    if policy_class == 'Diffusion':
+        post_process = lambda a: ((a + 1) / 2) * (stats['action_max'] - stats['action_min']) + stats['action_min']
+
+    query_frequency = policy_config['num_queries']
+    if temporal_agg:
+        query_frequency = 1
+        num_queries = policy_config['num_queries']
+    max_timesteps = int(max_timesteps * 1)  # may increase for real-world tasks
+
+    episode_returns = []
+    highest_rewards = []
+    for rollout_id in range(num_rollouts):
+        rollout_id += 0
+        ### evaluation loop
+        if temporal_agg:
+            all_time_actions = torch.zeros([max_timesteps, max_timesteps + num_queries, 16]).cuda()
+        qpos_history_raw = np.zeros((max_timesteps, state_dim))
+        image_list = []  # for visualization
+        qpos_list = []
+        target_qpos_list = []
+        rewards = []
+        # if use_actuator_net:
+        #     norm_episode_all_base_actions = [actuator_norm(np.zeros(history_len, 2)).tolist()]
+        with torch.inference_mode():
+            time0 = time.time()
+            for t in range(max_timesteps):
+                time1 = time.time()
+                if 'images' in obs:
+                    image_list.append(obs['images'])
+                else:
+                    image_list.append({'main': obs['image']})
+                qpos_numpy = np.array(obs['qpos'])
+                qpos_history_raw[t] = qpos_numpy
+                qpos = pre_process(qpos_numpy)
+                qpos = torch.from_numpy(qpos).float().cuda().unsqueeze(0)
+                # qpos_history[:, t] = qpos
+                if t % query_frequency == 0:
+                    curr_image = get_image(ts, camera_names, rand_crop_resize=(config['policy_class'] == 'Diffusion'))
+
+                if t == 0:
+                    # warm up
+                    for _ in range(10):
+                        ac = policy(qpos, curr_image)
+                    print('network warm up done')
+                    time1 = time.time()
+
+                ### query policy
+                time3 = time.time()
+
+                if t % query_frequency == 0:
+                    all_actions = policy(qpos, curr_image)
+                        # if use_actuator_net:
+                        #     collect_base_action(all_actions, norm_episode_all_base_actions)
+                    if real_robot:
+                        all_actions = torch.cat([all_actions[:, :-13, :-2], all_actions[:, 13:, -2:]], dim=2)
+                raw_action = all_actions[:, t % query_frequency]
+                ### post-process actions
+                time4 = time.time()
+                raw_action = raw_action.squeeze(0).cpu().numpy()
+                action = post_process(raw_action)
+                target_qpos = action[:-2]
+                base_action = action[-2:]
+
+
+        rewards = np.array(rewards)
+        episode_return = np.sum(rewards[rewards != None])
+        episode_returns.append(episode_return)
+        episode_highest_reward = np.max(rewards)
+        highest_rewards.append(episode_highest_reward)
+        print(
+            f'Rollout {rollout_id}\n{episode_return=}, {episode_highest_reward=}, {env_max_reward=}, Success: {episode_highest_reward == env_max_reward}')
+
+        # if save_episode:
+        #     save_videos(image_list, DT, video_path=os.path.join(ckpt_dir, f'video{rollout_id}.mp4'))
+
+    success_rate = np.mean(np.array(highest_rewards) == env_max_reward)
+    avg_return = np.mean(episode_returns)
+    summary_str = f'\nSuccess rate: {success_rate}\nAverage return: {avg_return}\n\n'
+    for r in range(env_max_reward + 1):
+        more_or_equal_r = (np.array(highest_rewards) >= r).sum()
+        more_or_equal_r_rate = more_or_equal_r / num_rollouts
+        summary_str += f'Reward >= {r}: {more_or_equal_r}/{num_rollouts} = {more_or_equal_r_rate * 100}%\n'
+
+    print(summary_str)
+
+    # save success rate to txt
+    result_file_name = 'result_' + ckpt_name.split('.')[0] + '.txt'
+    with open(os.path.join(ckpt_dir, result_file_name), 'w') as f:
+        f.write(summary_str)
+        f.write(repr(episode_returns))
+        f.write('\n\n')
+        f.write(repr(highest_rewards))
+
+    return success_rate, avg_return
+
+
+def forward_pass(data, policy):
+    image_data, qpos_data, action_data, is_pad = data
+    image_data, qpos_data, action_data, is_pad = image_data.cuda(), qpos_data.cuda(), action_data.cuda(), is_pad.cuda()
+    return policy(qpos_data, image_data, action_data, is_pad)  # TODO remove None
+
+
+
+def repeater(data_loader):
+    epoch = 0
+    for loader in repeat(data_loader):
+        for data in loader:
+            yield data
+        print(f'Epoch {epoch} done')
+        epoch += 1
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--eval', action='store_true')
+    parser.add_argument('--onscreen_render', action='store_true')
+    parser.add_argument('--load_pretrain', action='store_true', default=False)
+    parser.add_argument('--eval_every', action='store', type=int, default=500, help='eval_every', required=False)
+    parser.add_argument('--validate_every', action='store', type=int, default=500, help='validate_every',
+                        required=False)
+    parser.add_argument('--save_every', action='store', type=int, default=500, help='save_every', required=False)
+    parser.add_argument('--resume_ckpt_path', action='store', type=str, help='resume_ckpt_path', required=False)
+    parser.add_argument('--skip_mirrored_data', action='store_true')
+    parser.add_argument('--actuator_network_dir', action='store', type=str, help='actuator_network_dir', required=False)
+    parser.add_argument('--history_len', action='store', type=int)
+    parser.add_argument('--future_len', action='store', type=int)
+    parser.add_argument('--prediction_len', action='store', type=int)
+    parser.add_argument('--temporal_agg', action='store_true')
+    parser.add_argument('--use_vq', action='store_true')
+    parser.add_argument('--vq_class', action='store', type=int, help='vq_class')
+    parser.add_argument('--vq_dim', action='store', type=int, help='vq_dim')
+    parser.add_argument('--no_encoder', action='store_true')
+
+    # for ACT
+    parser.add_argument('--kl_weight', action='store', type=int, help='KL Weight', required=False, default=10)
+    parser.add_argument('--chunk_size', action='store', type=int, help='chunk_size', required=False, default=100)
+    parser.add_argument('--hidden_dim', action='store', type=int, help='hidden_dim', required=False, default=512)
+    parser.add_argument('--dim_feedforward', action='store', type=int, help='dim_feedforward', required=False,
+                        default=3200)
+    parser.add_argument('--lr', action='store', type=float, help='lr', required=False, default=1e-5)
+    parser.add_argument('--ckpt_dir', action='store', type=str, help='ckpt_dir', required=False, default='check_points')
+    parser.add_argument('--policy_class', action='store', type=str, help='policy_class, capitalize', required=False,
+                        default='Diffusion')
+    parser.add_argument('--task_name', action='store', type=str, help='task_name', required=False,
+                        default='sim_transfer_cube_scripted')
+    parser.add_argument('--batch_size', action='store', type=int, help='batch_size', required=False, default=2)
+    parser.add_argument('--seed', action='store', type=int, help='seed', required=False, default=0)
+    parser.add_argument('--num_steps', action='store', type=int, help='num_steps', required=False, default=2000)
+    main(vars(parser.parse_args()))

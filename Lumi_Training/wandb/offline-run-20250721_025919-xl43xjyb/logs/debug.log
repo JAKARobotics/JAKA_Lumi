@@ -1,0 +1,23 @@
+2025-07-21 02:59:19,282 INFO    MainThread:776 [wandb_setup.py:_flush():70] Current SDK version is 0.19.11
+2025-07-21 02:59:19,282 INFO    MainThread:776 [wandb_setup.py:_flush():70] Configure stats pid to 776
+2025-07-21 02:59:19,282 INFO    MainThread:776 [wandb_setup.py:_flush():70] Loading settings from /root/.config/wandb/settings
+2025-07-21 02:59:19,282 INFO    MainThread:776 [wandb_setup.py:_flush():70] Loading settings from /root/Lumi_Training/wandb/settings
+2025-07-21 02:59:19,282 INFO    MainThread:776 [wandb_setup.py:_flush():70] Loading settings from environment variables
+2025-07-21 02:59:19,282 INFO    MainThread:776 [wandb_init.py:setup_run_log_directory():724] Logging user logs to /root/Lumi_Training/wandb/offline-run-20250721_025919-xl43xjyb/logs/debug.log
+2025-07-21 02:59:19,282 INFO    MainThread:776 [wandb_init.py:setup_run_log_directory():725] Logging internal logs to /root/Lumi_Training/wandb/offline-run-20250721_025919-xl43xjyb/logs/debug-internal.log
+2025-07-21 02:59:19,282 INFO    MainThread:776 [wandb_init.py:init():852] calling init triggers
+2025-07-21 02:59:19,282 INFO    MainThread:776 [wandb_init.py:init():857] wandb.init called with sweep_config: {}
+config: {'_wandb': {}}
+2025-07-21 02:59:19,282 INFO    MainThread:776 [wandb_init.py:init():893] starting backend
+2025-07-21 02:59:19,282 INFO    MainThread:776 [wandb_init.py:init():897] sending inform_init request
+2025-07-21 02:59:19,284 INFO    MainThread:776 [backend.py:_multiprocessing_setup():101] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2025-07-21 02:59:19,284 INFO    MainThread:776 [wandb_init.py:init():907] backend started and connected
+2025-07-21 02:59:19,285 INFO    MainThread:776 [wandb_init.py:init():1005] updated telemetry
+2025-07-21 02:59:19,288 INFO    MainThread:776 [wandb_init.py:init():1029] communicating run to backend with 90.0 second timeout
+2025-07-21 02:59:19,403 INFO    MainThread:776 [wandb_init.py:init():1104] starting run threads in backend
+2025-07-21 02:59:19,495 INFO    MainThread:776 [wandb_run.py:_console_start():2573] atexit reg
+2025-07-21 02:59:19,496 INFO    MainThread:776 [wandb_run.py:_redirect():2421] redirect: wrap_raw
+2025-07-21 02:59:19,496 INFO    MainThread:776 [wandb_run.py:_redirect():2490] Wrapping output streams.
+2025-07-21 02:59:19,496 INFO    MainThread:776 [wandb_run.py:_redirect():2513] Redirects installed.
+2025-07-21 02:59:19,497 INFO    MainThread:776 [wandb_init.py:init():1150] run started, returning control to user process
+2025-07-21 02:59:19,497 INFO    MainThread:776 [wandb_run.py:_config_callback():1436] config_cb None None {'num_steps': 1000000, 'eval_every': 500, 'validate_every': 1000, 'save_every': 1000, 'ckpt_dir': '/root/datasets/check_points', 'resume_ckpt_path': None, 'episode_len': 400, 'state_dim': 7, 'lr': 1e-05, 'policy_class': 'ACT', 'onscreen_render': False, 'policy_config': {'lr': 1e-05, 'num_queries': 50, 'kl_weight': 10, 'hidden_dim': 512, 'dim_feedforward': 3200, 'lr_backbone': 1e-05, 'backbone': 'resnet18', 'enc_layers': 4, 'dec_layers': 7, 'nheads': 8, 'camera_names': ['front_cam', 'right_cam'], 'vq': False, 'vq_class': None, 'vq_dim': None, 'action_dim': 7, 'no_encoder': False}, 'task_name': 'sim_transfer_cube_scripted', 'seed': 0, 'temporal_agg': False, 'camera_names': ['front_cam', 'right_cam'], 'load_pretrain': False, 'actuator_config': {'actuator_network_dir': None, 'history_len': None, 'future_len': None, 'prediction_len': None}}

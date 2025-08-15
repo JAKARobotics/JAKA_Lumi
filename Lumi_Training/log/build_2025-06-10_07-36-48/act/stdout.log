@@ -1,0 +1,15 @@
+running egg_info
+creating build/act/act.egg-info
+writing build/act/act.egg-info/PKG-INFO
+writing dependency_links to build/act/act.egg-info/dependency_links.txt
+writing top-level names to build/act/act.egg-info/top_level.txt
+writing manifest file 'build/act/act.egg-info/SOURCES.txt'
+reading manifest file 'build/act/act.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'build/act/act.egg-info/SOURCES.txt'
+running build
+running install
+running install_egg_info
+Copying build/act/act.egg-info to /root/ACT/install/act/lib/python3.10/site-packages/act-0.0.0-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/root/ACT/build/act/install.log'
