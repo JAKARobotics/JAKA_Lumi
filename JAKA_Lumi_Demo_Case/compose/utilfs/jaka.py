@@ -6,11 +6,32 @@ Discription:
 '''
 import os
 import time
-
+import sys
+# 获取当前脚本所在目录
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# 获取compose目录路径（当前目录的父目录）
+compose_dir = os.path.dirname(current_dir)
+# 将compose目录添加到sys.path
+sys.path.append(compose_dir)
 try:
-    from JAKA_SDK_LINUX import jkrc
-except:
-    raise NameError("JAKA SDK path error! current work path: ", os.path.abspath('.'))
+    # 方法1：直接导入.so文件
+    import sys
+    import os
+    
+    # 将JAKA_SDK_LINUX目录添加到系统路径
+    sdk_path = os.path.join(compose_dir, 'JAKA_SDK_LINUX')
+    sys.path.append(sdk_path)
+    
+    # 尝试直接导入jkrc.so
+    import jkrc
+    print("[INFO] 成功导入jkrc.so")
+except Exception as e1:
+    try:
+        # 方法2：作为模块导入
+        from JAKA_SDK_LINUX import jkrc
+        print("[INFO] 成功从JAKA_SDK_LINUX模块导入jkrc")
+    except Exception as e2:
+        raise NameError(f"JAKA SDK path error! 无法导入jkrc模块: {str(e1)} / {str(e2)}")
 
 class JAKA():
     # parameters
