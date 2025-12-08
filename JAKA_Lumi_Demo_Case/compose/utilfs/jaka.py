@@ -19,7 +19,7 @@ try:
     import os
     
     # 将JAKA_SDK_LINUX目录添加到系统路径
-    sdk_path = os.path.join(compose_dir, 'JAKA_SDK_LINUX')
+    sdk_path = os.path.join(compose_dir, 'JAKA_SDK_LINUX_ARM')
     sys.path.append(sdk_path)
     
     # 尝试直接导入jkrc.so
@@ -28,7 +28,7 @@ try:
 except Exception as e1:
     try:
         # 方法2：作为模块导入
-        from JAKA_SDK_LINUX import jkrc
+        from JAKA_SDK_LINUX_ARM import jkrc
         print("[INFO] 成功从JAKA_SDK_LINUX模块导入jkrc")
     except Exception as e2:
         raise NameError(f"JAKA SDK path error! 无法导入jkrc模块: {str(e1)} / {str(e2)}")
@@ -291,14 +291,25 @@ class JAKA():
         print("[JAKA] logout successfully")
 
     def jaka_connect(self):
+        print(self.address)
         self.robot = jkrc.RC(self.address)
         print("[JAKA] logining...")
-        ret=self.robot.login()
+        ret=self.robot.login(1)
         print("login status: "+str(ret))
-        if not self.robot.power_on():
-            print("[JAKA] power_on successfully")
-        if not self.robot.enable_robot():
-            print("[JAKA] enable_robot successfully")
+
+        # 获取power_on结果
+        power_result = self.robot.power_on()
+        print(f"[JAKA] power_on result: {power_result}")
+        
+        # 获取enable_robot结果
+        enable_result = self.robot.enable_robot()
+        print(f"[JAKA] enable_robot result: {enable_result}")
+        return True
+        # 检查结果，如果都返回0则成功，否则失败
+        # if power_result == 0 and enable_result == 0:
+        #     print("[JAKA] power_on和enable_robot都执行成功")
+        #     return True
         # else:
-        #     print("[JAKA] enable_robot failed.")
+        #     print("[JAKA] power_on或enable_robot执行失败")
+        #     return False
 

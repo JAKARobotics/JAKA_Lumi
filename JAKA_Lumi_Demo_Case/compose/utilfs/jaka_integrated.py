@@ -9,10 +9,10 @@ import requests
 import json
 import socket
 
-try:
-    from JAKA_SDK_LINUX import jkrc
-except:
-    raise NameError("JAKA SDK path error! current work path: ", os.path.abspath('.'))
+# try:
+#     from JAKA_SDK_LINUX import jkrc
+# except:
+#     raise NameError("JAKA SDK path error! current work path: ", os.path.abspath('.'))
 
 from utilfs.jaka import JAKA
 
@@ -289,10 +289,7 @@ class JAKAIntegrated(JAKA):
         初始化整个系统
         :return: 成功返回True，失败返回False
         """
-        # 连接机器人
-        self.jaka_connect()
-        robot_ok = True
-        
+
         # 检查外部轴连接
         ext_ok = True
         if self.ext_base_url:
@@ -300,6 +297,9 @@ class JAKAIntegrated(JAKA):
             if ext_ok:
                 self.ext_reset()
                 self.ext_enable(True)
+        
+        # 连接机器人
+        robot_ok = self.jaka_connect()
         
         # AGV无需特别初始化
         

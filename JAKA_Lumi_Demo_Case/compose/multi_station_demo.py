@@ -10,7 +10,7 @@ import json
 
 # 添加脚本所在目录到系统路径，确保能正确找到配置文件
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-useMock = True
+useMock = False
 if not useMock:
     # 导入集成控制类
     from utilfs.jaka_integrated import JAKAIntegrated
@@ -80,7 +80,7 @@ def update_operation_mode(station_config, config_path):
     except Exception as e:
         print(f"更新操作模式失败: {e}")
 
-def execute_task_at_station(control: JAKAIntegratedMock, station_id, station_config, config_path):
+def execute_task_at_station(control: JAKAIntegrated, station_id, station_config, config_path):
     """
     在指定站点执行任务
     :param control: JAKAIntegratedMock控制实例

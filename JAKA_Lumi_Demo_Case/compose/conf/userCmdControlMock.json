@@ -25,7 +25,7 @@
         "RelativeOffset-Y": 20
     },
     "calibrateParams": {
-        "robotIP": "192.168.10.90",
+        "robotIP": "192.168.8.81",
         "CalibrateImageSaveDir": "./lumi_handCam/",
         "boardRowNums": 8,
         "boardCowNums": 11,
@@ -36,9 +36,9 @@
         "nearPointTimes": 10
     },
     "systemConfig": {
-        "robot_ip": "192.168.10.90",
-        "ext_base_url": "http://192.168.10.90:5000/api/extaxis",
-        "agv_ip": "192.168.10.10",
+        "robot_ip": "192.168.8.81",
+        "ext_base_url": "http://192.168.8.81:5000/api/extaxis",
+        "agv_ip": "192.168.8.81",
         "agv_port": 31001
     },
     "extAxisLimits": {
