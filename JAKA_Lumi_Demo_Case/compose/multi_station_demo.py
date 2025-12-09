@@ -36,6 +36,28 @@ def load_stations(config_path):
     except Exception as e:
         print(f"加载站点配置失败: {e}")
         return {}
+    
+def load_ext_axis_limits(config_path):
+    """从配置文件加载外部轴关节限制参数"""
+    try:
+        with open(config_path, 'r', encoding='utf-8') as f:
+            user_config = json.load(f)
+            
+        if "extAxisLimits" in user_config:
+            print("成功从配置文件加载外部轴关节限制参数")
+            return user_config["extAxisLimits"]
+        else:
+            print("警告: 未找到外部轴限制配置，使用默认值")
+            return {
+                "joint1": {"min": 0, "max": 200, "desc": "升降，单位mm"}, 
+                "joint2": {"min": -140, "max": 140, "desc": "腰部旋转，单位度"},
+                "joint3": {"min": -180, "max": 180, "desc": "头部旋转，单位度"},
+                "joint4": {"min": -5, "max": 35, "desc": "头部俯仰，单位度"}
+            }
+
+    except Exception as e:
+        print(f"加载站点配置失败: {e}")
+        return {}
 
 def load_config(config_path):
     """加载系统配置"""
@@ -89,18 +111,22 @@ def execute_task_at_station(control: JAKAIntegrated, station_id, station_config,
     :param config_path: 配置文件路径
     """
     print(f"准备在 {station_config['name']} 执行任务...")
-    
+    # 0. 获取状态
+
+    status = control.agv_get_status()
+    print(f"当前状态: {status}")
+
     # 1. 移动到站点
     if not control.move_to_station(station_config['name'], station_config['agv_marker']):
         print(f"移动到 {station_config['name']} 失败，跳过此站点任务")
         return False
-
     # 2. 设置机器人和外部轴到初始位
     if control.ext_base_url:
         # 尝试移动外部轴，如果超出限制则会在方法内部打印错误
         ext_result = control.ext_moveto(station_config['ext_home_pos'])
         if not ext_result:
             print(f"警告: 外部轴移动失败，但将继续执行任务")
+
     control.rob_moveto(station_config['robot_home_pos'])
     
     # 检查操作模式，如果是"none"则跳过后续操作
@@ -111,15 +137,15 @@ def execute_task_at_station(control: JAKAIntegrated, station_id, station_config,
         return True
     elif operation_mode == 'capture':
         print(f"站点 {station_config['name']} 的操作模式为'capture'，执行拍照操作")
-        control.capture_image()
+        # control.capture_image()
         return True
     elif  operation_mode == 'opendoor':
         print(f"站点 {station_config['name']} 的操作模式为'opendoor'，执行开门操作")
-        control.open_door(door_id=station_config['door_id'])
+        # control.open_door(door_id=station_config['door_id'])
         return True
     elif operation_mode == 'close door':
         print(f"站点 {station_config['name']} 的操作模式为'close door'，执行关门操作")
-        control.close_door(door_id=station_config['door_id'])
+        # control.close_door(door_id=station_config['door_id'])
         return True
     else:
         print(f"未知操作模式: {operation_mode}")
@@ -155,6 +181,9 @@ def main():
     
     # 加载站点配置
     stations = load_stations(config_path)
+
+    ext_axis_limits = load_ext_axis_limits(config_path)
+
     if not stations:
         print("没有可用的站点配置，程序退出")
         return
@@ -162,10 +191,8 @@ def main():
     if not useMock:
         # 创建集成控制实例
         control = JAKAIntegrated(
-            robot_ip=config["robot_ip"],
-            ext_base_url=config.get("ext_base_url"),
-            agv_ip=config.get("agv_ip"),
-            agv_port=config.get("agv_port")
+            system_config = config,
+            ext_axis_limits = ext_axis_limits
         )
     else :
         # 创建模拟控制实例
@@ -181,24 +208,24 @@ def main():
         print("系统初始化失败，程序退出")
         return
     
-    try:
-        # 按顺序执行各站点任务
-        for station_id, station_config in stations.items():
-            print(f"\n===== 开始 {station_config['name']} 任务 =====")
-            execute_task_at_station(control, station_id, station_config, config_path)
-            print(f"===== 完成 {station_config['name']} 任务 =====\n")
+    # try:
+    #     # 按顺序执行各站点任务
+    #     for station_id, station_config in stations.items():
+    #         print(f"\n===== 开始 {station_config['name']} 任务 =====")
+    #         execute_task_at_station(control, station_id, station_config, config_path)
+    #         print(f"===== 完成 {station_config['name']} 任务 =====\n")
             
-            # 任务间暂停
-            time.sleep(2)
+    #         # 任务间暂停
+    #         time.sleep(2)
             
-    except KeyboardInterrupt:
-        print("\n用户中断程序")
-    except Exception as e:
-        print(f"程序执行过程中发生错误: {e}")
-    finally:
-        # # 关闭系统
-        # control.shutdown_system()
-        print("程序已退出")
+    # except KeyboardInterrupt:
+    #     print("\n用户中断程序")
+    # except Exception as e:
+    #     print(f"程序执行过程中发生错误: {e}")
+    # finally:
+    #     # # 关闭系统
+    #     control.shutdown_system()
+    #     print("程序已退出")
 
 if __name__ == "__main__":
     time.sleep(3)

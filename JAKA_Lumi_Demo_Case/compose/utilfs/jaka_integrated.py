@@ -16,13 +16,14 @@ import socket
 
 from utilfs.jaka import JAKA
 
+
 class JAKAIntegrated(JAKA):
     # 默认设置
     DEFAULT_EXT_VEL = 100
     DEFAULT_EXT_ACC = 100
     DEFAULT_ROB_VEL = 90
 
-    def __init__(self, robot_ip, ext_base_url=None, agv_ip=None, agv_port=None):
+    def __init__(self, system_config = None, ext_axis_limits = None):
         """
         初始化集成控制系统
         :param robot_ip: JAKA机器人IP地址
@@ -31,49 +32,24 @@ class JAKAIntegrated(JAKA):
         :param agv_port: AGV端口
         """
         # 调用父类初始化，但不立即连接
-        super().__init__(robot_ip, connect=False)
-        
+        super().__init__(system_config["robot_ip"], connect=False)
+        self.system_config = system_config
         # 外部轴控制相关
-        self.ext_base_url = ext_base_url
-        if ext_base_url:
-            self.EXT_MOVETO_URL = f"{ext_base_url}/moveto"
-            self.EXT_SYSINFO_URL = f"{ext_base_url}/sysinfo"
-            self.EXT_RESET_URL = f"{ext_base_url}/reset"
-            self.EXT_ENABLE_URL = f"{ext_base_url}/enable"
-            self.EXT_GETSTATE_URL = f"{ext_base_url}/status"
+        self.ext_base_url = system_config.get("ext_base_url")
+        if self.ext_base_url:
+            self.EXT_MOVETO_URL = f"{self.ext_base_url}/moveto"
+            self.EXT_SYSINFO_URL = f"{self.ext_base_url}/sysinfo"
+            self.EXT_RESET_URL = f"{self.ext_base_url}/reset"
+            self.EXT_ENABLE_URL = f"{self.ext_base_url}/enable"
+            self.EXT_GETSTATE_URL = f"{self.ext_base_url}/status"
         
         # AGV控制相关
-        self.agv_ip = agv_ip
-        self.agv_port = agv_port
+        self.agv_ip = system_config.get("agv_ip")
+        self.agv_port = system_config.get("agv_port")
         
         # 加载外部轴关节限制
-        self.ext_axis_limits = self._load_ext_axis_limits()
-    
-    def _load_ext_axis_limits(self):
-        """加载外部轴关节限制参数"""
-        try:
-            import json
-            with open('./conf/userCmdControl.json', 'r') as f:
-                config = json.load(f)
-            if "extAxisLimits" in config:
-                return config["extAxisLimits"]
-            else:
-                print("警告: 未找到外部轴限制配置，使用默认值")
-                return {
-                    "joint1": {"min": 0, "max": 200, "desc": "升降，单位mm"}, 
-                    "joint2": {"min": -140, "max": 140, "desc": "腰部旋转，单位度"},
-                    "joint3": {"min": -180, "max": 180, "desc": "头部旋转，单位度"},
-                    "joint4": {"min": -5, "max": 35, "desc": "头部俯仰，单位度"}
-                }
-        except Exception as e:
-            print(f"加载外部轴限制失败: {e}，使用默认值")
-            return {
-                "joint1": {"min": 0, "max": 200, "desc": "升降，单位mm"}, 
-                "joint2": {"min": -140, "max": 140, "desc": "腰部旋转，单位度"},
-                "joint3": {"min": -180, "max": 180, "desc": "头部旋转，单位度"},
-                "joint4": {"min": -5, "max": 35, "desc": "头部俯仰，单位度"}
-            }
-    
+        self.ext_axis_limits = ext_axis_limits
+        
     def _adjust_to_joint_limits(self, point):
         """
         调整关节位置以确保在限制范围内
@@ -271,6 +247,13 @@ class JAKAIntegrated(JAKA):
             time.sleep(0.5)
             try:
                 response = self._send_command_to_agv("/api/robot_status")
+                '''
+                TODO: 文档中move_target表示移动指令指定的点位名称。
+                当以”location”调用移动接口时, 此字段值为空
+                当调用巡游接口时，此字段为当前正在前往的点位名称
+                '''
+                if response and response['results']['move_target']:
+                    print(f"当前目标: {response['results']['move_target']}")
                 if response and response['results']['move_status'] == "succeeded":
                     is_done = True
                     print(f"AGV已到达标记点 {point_name}")

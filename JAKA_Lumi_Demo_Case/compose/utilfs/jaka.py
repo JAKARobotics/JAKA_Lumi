@@ -19,7 +19,7 @@ try:
     import os
     
     # 将JAKA_SDK_LINUX目录添加到系统路径
-    sdk_path = os.path.join(compose_dir, 'JAKA_SDK_LINUX_ARM')
+    sdk_path = os.path.join(compose_dir, 'JAKA_SDK_WINDOWS')
     sys.path.append(sdk_path)
     
     # 尝试直接导入jkrc.so
@@ -28,8 +28,8 @@ try:
 except Exception as e1:
     try:
         # 方法2：作为模块导入
-        from JAKA_SDK_LINUX_ARM import jkrc
-        print("[INFO] 成功从JAKA_SDK_LINUX模块导入jkrc")
+        from JAKA_SDK_WINDOWS import jkrc
+        print("[INFO] 成功从JAKA_SDK_WINDOWS模块导入jkrc")
     except Exception as e2:
         raise NameError(f"JAKA SDK path error! 无法导入jkrc模块: {str(e1)} / {str(e2)}")
 
@@ -150,7 +150,7 @@ class JAKA():
         else:
             return -1
 
-    def getjoints(self):
+    def get_joints(self):
         ret = self.robot.get_joint_position()
         if ret[0] == 0:
             return ret[1]
@@ -234,7 +234,7 @@ class JAKA():
 
     # get pose
     # get [X, Y, Z] pose
-    def getposXYZ(self):
+    def get_posXYZ(self):
         ret = self.robot.get_tcp_position()
         if ret[0] == 0:
             return ret[1][0:3]
@@ -245,7 +245,7 @@ class JAKA():
             return ret[1]
 
     # get [Roll, Pitch, Yaw] pose
-    def getposRPY(self):
+    def get_posRPY(self):
         ret = self.robot.get_tcp_position()
         ret = self.robot.get_robot_status()
         if ret[0] == 0:
@@ -254,7 +254,7 @@ class JAKA():
             print("positon get:", ret)
         # get [X, Y, Z, Roll, Pitch, Yaw] pose
 
-    def getpos6DoF(self):
+    def get_pos6DoF(self):
         ret = self.robot.get_robot_status()
         return ret[1][18]
 
@@ -285,6 +285,8 @@ class JAKA():
 
     # disconnect from the robot
     def robot_disconnect(self):
+        self.robot.disable_robot()
+        print("[JAKA] disable successfully")
         self.robot.power_off()
         print("[JAKA] power_off successfully")
         self.robot.logout()
@@ -293,23 +295,29 @@ class JAKA():
     def jaka_connect(self):
         print(self.address)
         self.robot = jkrc.RC(self.address)
+        if not self.robot:
+            return False
+        
         print("[JAKA] logining...")
-        ret=self.robot.login(1)
+        ret=self.robot.login(1)[0]
         print("login status: "+str(ret))
+        if ret != 0:
+            return False
+
 
         # 获取power_on结果
-        power_result = self.robot.power_on()
+        power_result = self.robot.power_on()[0]
         print(f"[JAKA] power_on result: {power_result}")
         
         # 获取enable_robot结果
-        enable_result = self.robot.enable_robot()
+        enable_result = self.robot.enable_robot()[0]
         print(f"[JAKA] enable_robot result: {enable_result}")
-        return True
-        # 检查结果，如果都返回0则成功，否则失败
-        # if power_result == 0 and enable_result == 0:
-        #     print("[JAKA] power_on和enable_robot都执行成功")
-        #     return True
-        # else:
-        #     print("[JAKA] power_on或enable_robot执行失败")
-        #     return False
+
+        #检查结果，如果都返回0则成功，否则失败
+        if power_result == 0 and enable_result == 0:
+            print("[JAKA] power_on和enable_robot都执行成功")
+            return True
+        else:
+            print("[JAKA] power_on或enable_robot执行失败")
+            return False
 

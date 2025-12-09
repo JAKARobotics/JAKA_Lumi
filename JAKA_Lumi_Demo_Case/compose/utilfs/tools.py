@@ -12,12 +12,20 @@ PI=3.1415926
 dashscope.api_key=os.getenv('DASHSCOPE_API_KEY')
 
 
+def radian_to_degree(radian):
+    """
+    将弧度转换为角度
+    :param radian: 弧度值（可以是单个数值或numpy数组）
+    :return: 角度值
+    """
+    return radian * (180 / PI)
+
+
 def loadJsonFile(jsonFile):
     with open(jsonFile,"r",encoding='utf8') as file:
         data=json.load(file)
         return data
     
-
 
 def simple_multimodal_conversation_call(image_file, text):
     """Simple single round multimodal conversation call.
