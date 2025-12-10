@@ -3,6 +3,7 @@
 '''多站点任务示例脚本
 演示如何使用JAKAIntegrated类在多个站点之间移动并执行检测抓取任务
 '''
+from utilfs.jaka_integrated import AGVIntegrated
 import os
 import time
 import sys
@@ -102,7 +103,7 @@ def update_operation_mode(station_config, config_path):
     except Exception as e:
         print(f"更新操作模式失败: {e}")
 
-def execute_task_at_station(control: JAKAIntegrated, station_id, station_config, config_path):
+def execute_task_at_station(arm_control: JAKAIntegrated, agv_control: AGVIntegrated, station_id, station_config, config_path):
     """
     在指定站点执行任务
     :param control: JAKAIntegratedMock控制实例
@@ -113,21 +114,20 @@ def execute_task_at_station(control: JAKAIntegrated, station_id, station_config,
     print(f"准备在 {station_config['name']} 执行任务...")
     # 0. 获取状态
 
-    status = control.agv_get_status()
-    print(f"当前状态: {status}")
-
     # 1. 移动到站点
-    if not control.move_to_station(station_config['name'], station_config['agv_marker']):
+    if not agv_control.agv_moveto(station_config['agv_marker']):
         print(f"移动到 {station_config['name']} 失败，跳过此站点任务")
         return False
+    
     # 2. 设置机器人和外部轴到初始位
-    if control.ext_base_url:
+    if arm_control.ext_base_url:
+        print(f'外部轴关节当前位置: {arm_control.ext_get_state()}')
         # 尝试移动外部轴，如果超出限制则会在方法内部打印错误
-        ext_result = control.ext_moveto(station_config['ext_home_pos'])
+        ext_result = arm_control.ext_moveto(station_config['ext_home_pos'])
         if not ext_result:
             print(f"警告: 外部轴移动失败，但将继续执行任务")
 
-    control.rob_moveto(station_config['robot_home_pos'])
+    arm_control.rob_moveto(station_config['robot_home_pos'])
     
     # 检查操作模式，如果是"none"则跳过后续操作
     operation_mode = station_config.get('operation_mode')
@@ -150,25 +150,7 @@ def execute_task_at_station(control: JAKAIntegrated, station_id, station_config,
     else:
         print(f"未知操作模式: {operation_mode}")
         return False
-    # 3. 更新操作模式
-    update_operation_mode(station_config, config_path)
-    
-    # 4. 执行视觉检测和抓取
-    try:
-        # 这里我们通过修改系统路径并导入visualDetect_ali模块来执行任务
-        # 注意：我们假设visualDetect_ali.py已经被修改为可以作为模块导入
-        print(f"开始执行视觉检测和抓取任务，操作模式: {operation_mode}")
-        
-        # 调用visualDetect_ali.py的主函数
-        # 这里假设已经修改visualDetect_ali.py为可导入模块
-        # 实际使用时可能需要根据具体情况调整
-        visualDetect_ali.run_detection(robot=control, auto_execute=True)
-        
-        print(f"在 {station_config['name']} 的任务执行完成")
-        return True
-    except Exception as e:
-        print(f"执行任务时出错: {e}")
-        return False
+   
 
 def main():
     """主函数"""
@@ -190,9 +172,13 @@ def main():
 
     if not useMock:
         # 创建集成控制实例
-        control = JAKAIntegrated(
+        arm_control = JAKAIntegrated(
             system_config = config,
             ext_axis_limits = ext_axis_limits
+        )
+        agv_control = AGVIntegrated(
+            system_config = config,
+            debug=False
         )
     else :
         # 创建模拟控制实例
@@ -204,28 +190,28 @@ def main():
         )
     
     # 初始化系统
-    if not control.setup_system():
+    if not arm_control.setup_system() :
         print("系统初始化失败，程序退出")
         return
     
-    # try:
-    #     # 按顺序执行各站点任务
-    #     for station_id, station_config in stations.items():
-    #         print(f"\n===== 开始 {station_config['name']} 任务 =====")
-    #         execute_task_at_station(control, station_id, station_config, config_path)
-    #         print(f"===== 完成 {station_config['name']} 任务 =====\n")
+    try:
+        # 按顺序执行各站点任务
+        for station_id, station_config in stations.items():
+            print(f"\n===== 开始 {station_config['name']} 任务 =====")
+            execute_task_at_station(arm_control, agv_control, station_id, station_config, config_path)
+            print(f"===== 完成 {station_config['name']} 任务 =====\n")
             
-    #         # 任务间暂停
-    #         time.sleep(2)
+            # 任务间暂停
+            time.sleep(2)
             
-    # except KeyboardInterrupt:
-    #     print("\n用户中断程序")
-    # except Exception as e:
-    #     print(f"程序执行过程中发生错误: {e}")
-    # finally:
-    #     # # 关闭系统
-    #     control.shutdown_system()
-    #     print("程序已退出")
+    except KeyboardInterrupt:
+        print("\n用户中断程序")
+    except Exception as e:
+        print(f"程序执行过程中发生错误: {e}")
+    finally:
+        # # 关闭系统
+        arm_control.shutdown_system()
+        print("程序已退出")
 
 if __name__ == "__main__":
     time.sleep(3)

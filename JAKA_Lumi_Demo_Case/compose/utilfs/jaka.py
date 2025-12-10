@@ -144,7 +144,6 @@ class JAKA():
         move_mode=move_mode if move_mode else 0
         sp=sp if sp else 30
         ret=self.robot.joint_move(joint_pos=joints, move_mode=move_mode, is_block=True, speed=sp)
-        # time.sleep(0.08)
         if ret[0] == 0:
             return 0
         else:

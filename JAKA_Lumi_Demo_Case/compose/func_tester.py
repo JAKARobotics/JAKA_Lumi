@@ -101,21 +101,18 @@ def callback(agv_data):
         
 def main():
     """主函数"""
-    print("=== 多站点任务系统 ===")
-
     config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'conf', 'userCmdControlMock.json')
-    
+
     # 加载系统配置
     system_config = load_config(config_path)
-    
-   
+
     # 创建集成控制实例
     control = AGVIntegrated(
         system_config = system_config,
         debug=False
     )
     print("系统初始化完成")
-    
+
     control.agv_request_data(callback)
     # 等待AGV数据接收线程启动
     time.sleep(5)

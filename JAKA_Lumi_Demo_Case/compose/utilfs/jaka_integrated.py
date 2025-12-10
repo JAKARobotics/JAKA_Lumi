@@ -169,12 +169,13 @@ class AGVIntegrated():
                 当以”location”调用移动接口时, 此字段值为空
                 当调用巡游接口时，此字段为当前正在前往的点位名称
                 '''
-                if response and response['results']['move_status'] == "succeeded":
+                if response and response.get('results', {}).get('move_status') == "succeeded":
                     is_done = True
-                    print(f"AGV已到达标记点 {point_name}")
+                    self.logger.info(f"AGV已到达标记点 {point_name}")
+
             except Exception as e:
                 # TODO: 输出其他状态的idle/suceeded/failed/canceld对应响应
-                self.logger.error(f"检查AGV状态时发生错误: {e},返回内容{response}")
+                self.logger.error(f"检查AGV状态时发生错误: {e},返回内容{response.get('results', {}).get('move_status')}")
                 return False
                 
         return True
@@ -550,23 +551,59 @@ class JAKAIntegrated(JAKA):
         else:
             self.logger.error(f"外部轴重置失败: {response.status_code}")
             return False
-    
+        
     def ext_enable(self, enable=True):
         """
         使能或禁用外部轴
         :param enable: True表示使能，False表示禁用
         """
         if not self.ext_base_url:
-            print("外部轴URL未配置")
+            self.logger.error("外部轴URL未配置")
             return False
             
-        response = requests.post(self.EXT_ENABLE_URL, json={"enable": 1 if enable else 0})
-        if response.status_code == 200:
-            self.logger.info("外部轴" + ("使能成功" if enable else "禁用成功"))
-            return True
-        else:
-            self.logger.error(f"外部轴" + ("使能失败" if enable else "禁用失败") + f": {response.status_code}")
-            return False
+        max_retries = 5
+        retry_count = 0
+        
+        while retry_count < max_retries:
+            current_states = self.ext_get_state()
+            self.logger.debug(f"外部轴当前状态: {current_states}")
+            
+            # 检查所有外部轴是否已经处于目标状态
+            all_in_target_state = True
+            for state in current_states:
+                print(f"外部轴{state['id']}当前使能状态: {state['enable']}")
+                if state['enable'] != enable:
+                    all_in_target_state = False
+                    break
+            
+            if all_in_target_state:
+                self.logger.info(f"外部轴已{'使能' if enable else '禁用'}")
+                return True
+            
+            # 发送使能/禁用请求
+            retry_count += 1
+            self.logger.info(f"外部轴未{'使能' if enable else '禁用'}，尝试第{retry_count}次{'使能' if enable else '禁用'}")
+            
+            try:
+                requests.post(self.EXT_RESET_URL, json={})
+                response = requests.post(self.EXT_ENABLE_URL, json={"enable": 1 if enable else 0})
+                self.logger.debug(f"外部轴{'使能' if enable else '禁用'}请求响应状态码: {response.status_code}")
+                
+                if response.status_code == 200:
+                    response_json = response.json()
+                    self.logger.debug(f"外部轴{'使能' if enable else '禁用'}请求响应内容: {response_json}")
+                    
+                    # 短暂延迟后再次检查状态
+                    time.sleep(0.5)
+                else:
+                    self.logger.error(f"外部轴{'使能' if enable else '禁用'}失败，响应状态码: {response.status_code}")
+                    time.sleep(1)
+            except Exception as e:
+                self.logger.error(f"外部轴{'使能' if enable else '禁用'}请求发生异常: {e}")
+                time.sleep(1)
+        
+        self.logger.error(f"外部轴{'使能' if enable else '禁用'}失败，已达到最大重试次数({max_retries})")
+        return False
     
     def ext_get_state(self):
         """
@@ -593,23 +630,37 @@ class JAKAIntegrated(JAKA):
         :return: 成功返回True，失败返回False
         """
         if not self.ext_base_url:
-            print("外部轴URL未配置")
+            self.logger.error("外部轴URL未配置")
             return False
+        
+        current_states = self.ext_get_state()
+        all_in_target_state = True
+        for state in current_states:
+            print(f"外部轴{state['id']}当前使能状态: {state['enable']}")
+            if state['enable'] != True:
+                all_in_target_state = False
+                break
+        if not all_in_target_state:
+            self.logger.info("外部轴未使能，尝试使能")
+            if not self.ext_enable(True):
+                return False
             
         # 检查关节限制并调整到限制范围内
         adjusted_point, was_adjusted, adjustment_msg = self._adjust_to_joint_limits(point)
         if was_adjusted:
-            print(f"警告: {adjustment_msg}")
-            print(f"原始位置: {point} -> 调整后位置: {adjusted_point}")
+            self.logger.warning(f"警告: {adjustment_msg}")
+            self.logger.warning(f"原始位置: {point} -> 调整后位置: {adjusted_point}")
             point = adjusted_point
             
         vel = vel if vel is not None else self.DEFAULT_EXT_VEL
         acc = acc if acc is not None else self.DEFAULT_EXT_ACC
-        
+        self.logger.info(f'发送外部轴运动指令, 目标位置: {point}, 速度: {vel}, 加速度: {acc}')
         response = requests.post(
             self.EXT_MOVETO_URL,
             json={"pos": point, "vel": vel, "acc": acc},
         )
+        self.logger.info(f'外部轴移动响应: {response}')
+
         if response.status_code == 200:
             self.logger.info('外部轴移动成功!')
             return True
@@ -632,11 +683,13 @@ class JAKAIntegrated(JAKA):
         if self.ext_base_url:
             ext_ok = self.ext_check_connection()
             if ext_ok:
-                self.ext_reset()
-                self.ext_enable(True)
+                ext_ok = ext_ok and self.ext_reset()
+                ext_ok = ext_ok and self.ext_enable(True)
+                
         
         # 连接机器人
         robot_ok = self.jaka_connect()
+        #robot_ok = True
         
         # AGV无需特别初始化
         
