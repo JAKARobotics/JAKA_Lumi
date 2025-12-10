@@ -7,7 +7,7 @@ from utilfs.tools import radian_to_degree
 # 添加脚本所在目录到系统路径，确保能正确找到配置文件
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utilfs.jaka_integrated import JAKAIntegrated
+from utilfs.jaka_integrated import AGVIntegrated
 
 # 从配置文件加载站点配置
 def load_stations(config_path):
@@ -75,6 +75,30 @@ def load_config(config_path):
         #     "agv_port": 31001
         # }
 
+def callback(agv_data):
+    """AGV数据接收回调函数"""
+    # 直接使用已经解析好的字典数据
+    try:
+        # 检查agv_data是否为字典类型
+        if isinstance(agv_data, dict):
+
+            print(f"#"*20)
+            print(f"收到AGV数据：")
+            print(f"running_status: {agv_data.get('results').get('running_status')}")
+            print(f"move_status: {agv_data.get('results').get('move_status')}")
+            print(f"move_target: {agv_data.get('results').get('move_target')}")
+            print(f"charge_state: {agv_data.get('results').get('charge_state')}")
+            print(f"estop_state: {agv_data.get('results').get('estop_state')}")
+            print(f"current_pose: {agv_data.get('results').get('current_pose')}")
+            print(f"power_percent: {agv_data.get('results').get('power_percent')}")
+            print(f"soft_estop_state: {agv_data.get('results').get('soft_estop_state')}")
+            print(f"#"*20)
+
+        else:
+            print("AGV数据不是字典类型")
+    except Exception as e:
+        print(f"处理AGV数据时发生错误: {e}")
+        
 def main():
     """主函数"""
     print("=== 多站点任务系统 ===")
@@ -82,36 +106,29 @@ def main():
     config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'conf', 'userCmdControlMock.json')
     
     # 加载系统配置
-    config = load_config(config_path)
+    system_config = load_config(config_path)
     
-    # 加载站点配置
-    stations = load_stations(config_path)
-
-    ext_axis_limits = load_ext_axis_limits(config_path)
-
+   
     # 创建集成控制实例
-    control = JAKAIntegrated(
-        system_config = config,
-        ext_axis_limits = ext_axis_limits
+    control = AGVIntegrated(
+        system_config = system_config,
+        debug=False
     )
-    
-    # 初始化系统
-    if not control.setup_system():
-        print("系统初始化失败，程序退出")
-        return
     print("系统初始化完成")
-    # control.agv_moveto("charge_point_1F_6010")
-
-    control.rob_moveto([0,30,100,0,60,-90])
-    # for i in range(10):
-    #     agv_status = control.agv_get_status()
-    #     if 'results' in agv_status and 'running_status' in agv_status['results']:
-    #         print(agv_status['results']['running_status'])
-    #     time.sleep(1)
     
-    print(control.ext_get_state())
-    print(control.get_joints())
-    control.shutdown_system()
+    control.agv_request_data(callback)
+    # 等待AGV数据接收线程启动
+    time.sleep(5)
+    # control.agv_set_point_as_marker('marker')
+    control.agv_estop()
+    time.sleep(5)
+    control.agv_estop_release()
+    time.sleep(5)
+    control.agv_moveto('marker_lab1_outdoor')
+    control.agv_moveto('marker')
+    control.agv_moveto('charge_point_1F_6010')
+
+    control.agv_stop_data()
 
 if __name__ == "__main__":
     main()
