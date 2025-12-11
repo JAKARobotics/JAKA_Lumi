@@ -121,7 +121,6 @@ def execute_task_at_station(arm_control: JAKAIntegrated, agv_control: AGVIntegra
     
     # 2. 设置机器人和外部轴到初始位
     if arm_control.ext_base_url:
-        print(f'外部轴关节当前位置: {arm_control.ext_get_state()}')
         # 尝试移动外部轴，如果超出限制则会在方法内部打印错误
         ext_result = arm_control.ext_moveto(station_config['ext_home_pos'])
         if not ext_result:
@@ -155,8 +154,8 @@ def execute_task_at_station(arm_control: JAKAIntegrated, agv_control: AGVIntegra
 def main():
     """主函数"""
     print("=== 多站点任务系统 ===")
-    
-    config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'conf', 'userCmdControlMock.json')
+    _debug = True
+    config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'conf', '213whole.json')
 
     # 加载系统配置
     config = load_config(config_path)
@@ -174,11 +173,12 @@ def main():
         # 创建集成控制实例
         arm_control = JAKAIntegrated(
             system_config = config,
-            ext_axis_limits = ext_axis_limits
+            ext_axis_limits = ext_axis_limits,
+            debug=_debug
         )
         agv_control = AGVIntegrated(
             system_config = config,
-            debug=False
+            debug= False
         )
     else :
         # 创建模拟控制实例
@@ -195,14 +195,14 @@ def main():
         return
     
     try:
-        # 按顺序执行各站点任务
-        for station_id, station_config in stations.items():
-            print(f"\n===== 开始 {station_config['name']} 任务 =====")
-            execute_task_at_station(arm_control, agv_control, station_id, station_config, config_path)
-            print(f"===== 完成 {station_config['name']} 任务 =====\n")
-            
-            # 任务间暂停
-            time.sleep(2)
+        for i in range(2):
+            # 按顺序执行各站点任务
+            for station_id, station_config in stations.items():
+                print(f"\n===== 开始 {station_config['name']} 任务 =====")
+                execute_task_at_station(arm_control, agv_control, station_id, station_config, config_path)
+                print(f"===== 完成 {station_config['name']} 任务 =====\n")
+                # 任务间暂停
+                time.sleep(5)
             
     except KeyboardInterrupt:
         print("\n用户中断程序")
