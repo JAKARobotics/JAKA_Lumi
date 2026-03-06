@@ -1,0 +1,186 @@
+{
+    "cameraParams": {
+        "align_mode": "SW",
+        "enable_sync": true,
+        "saveImgPath": "./images/project1"
+    },
+    "objects": {
+        "moveObjects": "yellow things",
+        "putObject": "box"
+    },
+    "operationMode": "grasp_only",
+    "robotParams": {
+        "basePose": [
+            292,
+            26,
+            98,
+            -24,
+            58,
+            -102
+        ],
+        "relativeUpMotionHeight": 60,
+        "RelativeOffset-Z": 0,
+        "RelativeOffset-Zput": 30,
+        "RelativeOffset-X": 50,
+        "RelativeOffset-Y": 20
+    },
+    "calibrateParams": {
+        "robotIP": "192.168.10.90",
+        "CalibrateImageSaveDir": "./lumi_handCam/",
+        "boardRowNums": 8,
+        "boardCowNums": 11,
+        "boardLength": 10
+    },
+    "genNearPointParams": {
+        "nearPointInterval": 10,
+        "nearPointTimes": 10
+    },
+    "systemConfig": {
+        "robot_ip": "192.168.10.90",
+        "ext_base_url": "http://192.168.10.90:5000/api/extaxis",
+        "agv_ip": "192.168.10.10",
+        "agv_port": 31001
+    },
+    "extAxisLimits": {
+        "joint1": {
+            "min": 0,
+            "max": 200,
+            "desc": "\u5347\u964d\uff0c\u5355\u4f4dmm"
+        },
+        "joint2": {
+            "min": -140,
+            "max": 140,
+            "desc": "\u8170\u90e8\u65cb\u8f6c\uff0c\u5355\u4f4d\u5ea6"
+        },
+        "joint3": {
+            "min": -180,
+            "max": 180,
+            "desc": "\u5934\u90e8\u65cb\u8f6c\uff0c\u5355\u4f4d\u5ea6"
+        },
+        "joint4": {
+            "min": -5,
+            "max": 35,
+            "desc": "\u5934\u90e8\u4fef\u4ef0\uff0c\u5355\u4f4d\u5ea6"
+        }
+    },
+    "stations": {
+        "station1": {
+            "name": "实验室1门口",
+            "agv_marker": "marker_lab1_outdoor",
+            "robot_home_pos": [
+                0,
+                30,
+                100,
+                0,
+                60,
+                -90
+            ],
+            "ext_home_pos": [
+                10,
+                0,
+                0,
+                0
+            ],
+            "operation_mode": "opendoor",
+            "door_id": "door1"
+        },
+        "station2": {
+            "name": "实验室1门里",
+            "agv_marker": "marker_lab1_indoor",
+            "robot_home_pos": [
+                -30,
+                30,
+                100,
+                0,
+                60,
+                -90
+            ],
+            "ext_home_pos": [
+                10,
+                0,
+                0,
+                0
+            ],
+            "operation_mode": "closedoor",
+            "door_id": "door1"
+        },
+        "station3": {
+            "name": "实验室1巡检点1",
+            "agv_marker": "marker_lab1_inspection_1",
+            "robot_home_pos": [
+                -50,
+                30,
+                100,
+                0,
+                60,
+                -90
+            ],
+            "ext_home_pos": [
+                20,
+                0,
+                0,
+                0
+            ],
+            "operation_mode": "capture"
+        },
+        "station4": {
+            "name": "实验室1巡检点2",
+            "agv_marker": "marker_lab1_inspection_2",
+            "robot_home_pos": [
+                30,
+                30,
+                100,
+                0,
+                60,
+                -90
+            ],
+            "ext_home_pos": [
+                10,
+                0,
+                0,
+                0
+            ],
+            "operation_mode": "capture"
+        },
+        "station5": {
+            "name": "实验室1门里",
+            "agv_marker": "marker_lab1_indoor",
+            "robot_home_pos": [
+                0,
+                30,
+                100,
+                0,
+                60,
+                -90
+            ],
+            "ext_home_pos": [
+                10,
+                0,
+                0,
+                30
+            ],
+            "operation_mode": "opendoor",
+            "door_id": "door1"
+        },
+        "station6": {
+            "name": "充电桩",
+            "agv_marker": "charge_point_1F_6010",
+            "robot_home_pos": [
+                -30,
+                30,
+                100,
+                0,
+                60,
+                -90
+            ],
+            "ext_home_pos": [
+                10,
+                0,
+                0,
+                0
+            ],
+            "operation_mode": "None",
+            "door_id": "None"
+        }
+    }
+}

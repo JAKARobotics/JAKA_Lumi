@@ -1,0 +1,144 @@
+{
+    "cameraParams": {
+        "align_mode": "SW",
+        "enable_sync": true,
+        "saveImgPath": "./images/project1"
+    },
+    "objects": {
+        "moveObjects": "yellow things",
+        "putObject": "box"
+    },
+    "operationMode": "grasp_only",
+    "robotParams": {
+        "basePose": [
+            292,
+            26,
+            98,
+            -24,
+            58,
+            -102
+        ],
+        "relativeUpMotionHeight": 60,
+        "RelativeOffset-Z": 0,
+        "RelativeOffset-Zput": 30,
+        "RelativeOffset-X": 50,
+        "RelativeOffset-Y": 20
+    },
+    "calibrateParams": {
+        "robotIP": "192.168.10.90",
+        "CalibrateImageSaveDir": "./lumi_handCam/",
+        "boardRowNums": 8,
+        "boardCowNums": 11,
+        "boardLength": 10
+    },
+    "genNearPointParams": {
+        "nearPointInterval": 10,
+        "nearPointTimes": 10
+    },
+    "systemConfig": {
+        "robot_ip": "192.168.10.90",
+        "ext_base_url": "http://192.168.10.90:5000/api/extaxis",
+        "agv_ip": "192.168.10.10",
+        "agv_port": 31001
+    },
+    "extAxisLimits": {
+        "joint1": {
+            "min": 0,
+            "max": 200,
+            "desc": "\u5347\u964d\uff0c\u5355\u4f4dmm"
+        },
+        "joint2": {
+            "min": -140,
+            "max": 140,
+            "desc": "\u8170\u90e8\u65cb\u8f6c\uff0c\u5355\u4f4d\u5ea6"
+        },
+        "joint3": {
+            "min": -180,
+            "max": 180,
+            "desc": "\u5934\u90e8\u65cb\u8f6c\uff0c\u5355\u4f4d\u5ea6"
+        },
+        "joint4": {
+            "min": -5,
+            "max": 35,
+            "desc": "\u5934\u90e8\u4fef\u4ef0\uff0c\u5355\u4f4d\u5ea6"
+        }
+    },
+    "stations": {
+        "station1": {
+            "name": "station1",
+            "agv_marker": "desk",
+            "robot_home_pos": [
+                292,
+                26,
+                98,
+                -24,
+                58,
+                -102
+            ],
+            "ext_home_pos": [
+                10,
+                0,
+                0,
+                30
+            ],
+            "operation_mode": "grasp_only"
+        },
+        "station2": {
+            "name": "station2",
+            "agv_marker": "move",
+            "robot_home_pos": [
+                292,
+                26,
+                98,
+                -24,
+                58,
+                -102
+            ],
+            "ext_home_pos": [
+                10,
+                0,
+                0,
+                0
+            ],
+            "operation_mode": "none"
+        },
+        "station3": {
+            "name": "station3",
+            "agv_marker": "cabinet",
+            "robot_home_pos": [
+                292,
+                26,
+                98,
+                -24,
+                58,
+                -102
+            ],
+            "ext_home_pos": [
+                200,
+                0,
+                0,
+                0
+            ],
+            "operation_mode": "put_cola"
+        },
+        "station4": {
+            "name": "station4",
+            "agv_marker": "wait",
+            "robot_home_pos": [
+                292,
+                26,
+                98,
+                -24,
+                58,
+                -102
+            ],
+            "ext_home_pos": [
+                10,
+                0,
+                0,
+                0
+            ],
+            "operation_mode": "none"
+        }
+    }
+}
