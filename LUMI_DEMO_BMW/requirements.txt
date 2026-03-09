@@ -1,0 +1,23 @@
+# Lumi 义卖机器人 - Python 依赖
+
+# Web 框架
+flask>=2.0.0
+requests>=2.28.0
+
+# 串口通信
+pyserial>=3.5
+
+# 数值计算
+numpy>=1.21.0
+opencv-python>=4.5.0
+
+# Orbbec 相机 SDK
+# 请参考: https://github.com/orbbec/pyorbbecsdk
+# pyorbbecsdk
+
+# JAKA SDK
+# SDK 文件位于 LumiAgent/JAKA_SDK_LINUX/
+# 需要设置 LD_LIBRARY_PATH 环境变量
+
+# 可选: 阿里大模型 API
+# dashscope>=1.14.0
