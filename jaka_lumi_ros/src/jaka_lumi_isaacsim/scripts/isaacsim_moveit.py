@@ -19,7 +19,7 @@ from pxr import Usd
 extensions.enable_extension("isaacsim.ros2.bridge")
 extensions.enable_extension("isaacsim.ros2.urdf")
 extensions.enable_extension("isaacsim.ros2.tf_viewer")
-extensions.enable_extension("isaacsim.code_editor.vscode")
+# extensions.enable_extension("isaacsim.code_editor.vscode")
 # extensions.enable_extension("omni.kit.debug.vscode")
 
 def _resolve_usd():
