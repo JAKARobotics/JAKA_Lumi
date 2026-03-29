@@ -48,7 +48,7 @@ def main():
     # Enable necessary extensions
     enable_extension("isaacsim.ros2.urdf")
     enable_extension("isaacsim.ros2.tf_viewer")
-    enable_extension("isaacsim.code.editor.vscode")
+    # enable_extension("isaacsim.code.editor.vscode")
     simulation_app.update()
 
     omni.kit.async_engine.run_coroutine(open_stage_async(options.path, options.start_on_play))
