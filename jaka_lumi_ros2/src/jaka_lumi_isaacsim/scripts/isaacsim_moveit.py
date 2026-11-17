@@ -95,7 +95,7 @@ og.Controller.edit(
         ],
         keys.SET_VALUES: [
             ("Context.inputs:useDomainIDEnvVar", True),
-            ("PublishClock.inputs:topicName", "clock"),
+            ("PublishClock.inputs:topicName", "/jaka_lumi/clock"),
             ("PublishJointState.inputs:targetPrim", [Sdf.Path(f"{LUMI_STAGE_PATH}/world")]),
             ("PublishJointState.inputs:topicName", "isaac_joint_states"),
             ("SubscribeJointState.inputs:topicName", "isaac_joint_commands"),
