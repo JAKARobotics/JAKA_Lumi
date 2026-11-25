@@ -22,20 +22,6 @@
             </hardware>
 
             <!-- Joint interfaces generated for each joint -->
-            <!-- <joint name="w_r">
-                <command_interface name="position"/>
-                <state_interface name="position">
-                  <param name="initial_value">${initial_positions['w_r']}</param>
-                </state_interface>
-                <state_interface name="velocity"/>
-            </joint>
-            <joint name="w_l">
-                <command_interface name="position"/>
-                <state_interface name="position">
-                  <param name="initial_value">${initial_positions['w_l']}</param>
-                </state_interface>
-                <state_interface name="velocity"/>
-            </joint> -->
             <joint name="l_1">
                 <command_interface name="position"/>
                 <state_interface name="position">

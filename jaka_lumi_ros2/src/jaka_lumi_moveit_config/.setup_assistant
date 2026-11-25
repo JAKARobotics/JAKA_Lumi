@@ -5,9 +5,9 @@ moveit_setup_assistant_config:
   srdf:
     relative_path: config/jaka_lumi.srdf
   package_settings:
-    author_name: meddy
+    author_name: Meddy
     author_email: medhanit@jaka.com
-    generated_timestamp: 1752563898
+    generated_timestamp: 1795570649
   control_xacro:
     command:
       - position

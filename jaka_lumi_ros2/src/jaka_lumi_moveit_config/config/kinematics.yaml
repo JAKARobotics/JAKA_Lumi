@@ -4,5 +4,3 @@ jaka_lumi_minicobo_arm:
   kinematics_solver_timeout: 0.005
 jaka_lumi_body:
   kinematics_solver: ""
-# jaka_lumi_agv:
-#   kinematics_solver: ""

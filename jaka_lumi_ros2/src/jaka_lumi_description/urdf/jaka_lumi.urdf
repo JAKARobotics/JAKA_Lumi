@@ -9,17 +9,17 @@
     name="base_link">
     <inertial>
       <origin
-        xyz="0 0.0437412928966446 0.0707957165798948"
+        xyz="-0.0438095027840726 3.57105172377192E-06 0.0731619578065543"
         rpy="0 0 0" />
       <mass
-        value="118.419767461939" />
+        value="117.497925421044" />
       <inertia
-        ixx="3.1138586576166"
-        ixy="-0.000267480261120321"
-        ixz="-0.000240262022398941"
-        iyy="3.13781428617829"
-        iyz="0.0591887403135809"
-        izz="4.06021684496764" />
+        ixx="2.44969766237705"
+        ixy="6.29818637921698E-05"
+        ixz="-0.00909231854635705"
+        iyy="2.34088041673458"
+        iyz="4.34134627923895E-05"
+        izz="3.90655578254118" />
     </inertial>
     <visual>
       <origin
@@ -57,16 +57,16 @@
     name="wheel_r">
     <inertial>
       <origin
-        xyz="0 0 0"
+        xyz="0 -1.38777878078145E-17 -2.77555756156289E-17"
         rpy="0 0 0" />
       <mass
         value="0.941042738950082" />
       <inertia
         ixx="0.00170499901767243"
-        ixy="0"
-        ixz="0"
+        ixy="2.61012178719941E-51"
+        ixz="-3.93685896742917E-35"
         iyy="0.00170499901767243"
-        iyz="0"
+        iyz="-1.70860751235549E-36"
         izz="0.00311129672944552" />
     </inertial>
     <visual>
@@ -97,8 +97,8 @@
     name="w_r"
     type="continuous">
     <origin
-      xyz="-0.1793 0.050006 -0.2071"
-      rpy="0 1.5708 0" />
+      xyz="-0.050006 -0.1793 -0.2071"
+      rpy="1.5708 1.5708 0" />
     <parent
       link="base_link" />
     <child
@@ -110,16 +110,16 @@
     name="wheel_l">
     <inertial>
       <origin
-        xyz="0 0 0"
+        xyz="5.55111512312578E-17 0 -5.55111512312578E-17"
         rpy="0 0 0" />
       <mass
         value="0.941042738950082" />
       <inertia
         ixx="0.00170499901767243"
-        ixy="0"
-        ixz="0"
+        ixy="-2.61012178719941E-51"
+        ixz="7.9632295469293E-35"
         iyy="0.00170499901767243"
-        iyz="0"
+        iyz="-1.70860751235549E-36"
         izz="0.00311129672944551" />
     </inertial>
     <visual>
@@ -150,8 +150,8 @@
     name="w_l"
     type="continuous">
     <origin
-      xyz="0.1793 0.050006 -0.2071"
-      rpy="0 1.5708 0" />
+      xyz="-0.050006 0.1793 -0.2071"
+      rpy="1.5708 1.5708 0" />
     <parent
       link="base_link" />
     <child
@@ -169,10 +169,10 @@
         value="14.2347501496821" />
       <inertia
         ixx="0.254522077593032"
-        ixy="0"
-        ixz="0"
+        ixy="1.40946576508768E-50"
+        ixz="2.26754525837298E-33"
         iyy="0.254522077593032"
-        iyz="0"
+        iyz="-3.78389053889462E-34"
         izz="0.0264837526534835" />
     </inertial>
     <visual>
@@ -204,7 +204,7 @@
     type="prismatic">
     <origin
       xyz="0 0 0.565"
-      rpy="0 0 0" />
+      rpy="0 0 1.5708" />
     <parent
       link="base_link" />
     <child
@@ -221,17 +221,17 @@
     name="link_2">
     <inertial>
       <origin
-        xyz="-0.00272184217011456 0 0.152635620082536"
+        xyz="-0.00510024630745398 2.76296992984815E-05 0.154932881817414"
         rpy="0 0 0" />
       <mass
-        value="4.81096378907801" />
+        value="4.7233153708112" />
       <inertia
-        ixx="0.0518101409623762"
-        ixy="0"
-        ixz="-0.000221077464376414"
-        iyy="0.0578684858223658"
-        iyz="0"
-        izz="0.0150348357164018" />
+        ixx="0.0380107276185894"
+        ixy="-1.54756618305936E-05"
+        ixz="-0.00405837940180053"
+        iyy="0.038549443771909"
+        iyz="8.5205560980774E-06"
+        izz="0.00950467485106964" />
     </inertial>
     <visual>
       <origin
@@ -279,16 +279,16 @@
     name="link_3">
     <inertial>
       <origin
-        xyz="-0.0025460222142763 0 0.0487080488190526"
+        xyz="-0.00254603029394257 8.15005075233133E-09 0.0487080356229588"
         rpy="0 0 0" />
       <mass
-        value="1.2679984054123" />
+        value="1.26800038366936" />
       <inertia
         ixx="0.00113364918039248"
-        ixy="0"
+        ixy="-8.90052173790767E-10"
         ixz="1.06284029103091E-05"
         iyy="0.00139294470935827"
-        iyz="0"
+        iyz="1.94125318630804E-09"
         izz="0.00124029626232309" />
     </inertial>
     <visual>
@@ -337,17 +337,17 @@
     name="link_4">
     <inertial>
       <origin
-        xyz="-0.0384844362337311 0.000254434136903972 0.000164186458846916"
+        xyz="-0.0356306238158506 0.0095279169156884 0.000373297154159846"
         rpy="0 0 0" />
       <mass
-        value="0.595955123537826" />
+        value="0.508313644761395" />
       <inertia
-        ixx="0.00257474893217961"
-        ixy="-9.38238274365993E-05"
-        ixz="-3.22409543343807E-05"
-        iyy="0.00196497079352686"
-        iyz="0"
-        izz="0.00167063669365818" />
+        ixx="0.00153204753150013"
+        ixy="3.60679513574583E-05"
+        ixz="5.37116944815584E-07"
+        iyy="0.0013933632076847"
+        iyz="-2.65576545266512E-06"
+        izz="0.000504925940669283" />
     </inertial>
     <visual>
       <origin
@@ -392,20 +392,73 @@
       velocity="0" />
   </joint>
   <link
+    name="Camera3_Link">
+    <inertial>
+      <origin
+        xyz="5.68892124458431E-05 -2.63392011503605E-05 0.012942735535695"
+        rpy="0 0 0" />
+      <mass
+        value="0.0875979434243871" />
+      <inertia
+        ixx="1.06602949918824E-05"
+        ixy="-8.549987272436E-08"
+        ixz="-5.78556215603212E-08"
+        iyy="0.00010643284507406"
+        iyz="9.93797837095661E-09"
+        izz="0.000107381008142404" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/Camera3_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/Camera3_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="cm3_l"
+    type="fixed">
+    <origin
+      xyz="-0.0552 -0.0665 -0.001"
+      rpy="-1.5708 -1.5708 0" />
+    <parent
+      link="link_4" />
+    <child
+      link="Camera3_Link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
     name="link_a1">
     <inertial>
       <origin
-        xyz="0 0.0134079971471797 0.0943686061195934"
+        xyz="-3.33695774012988E-06 0.01341969921731 0.0944035615262806"
         rpy="0 0 0" />
       <mass
-        value="1.35363412771609" />
+        value="1.35467577840826" />
       <inertia
-        ixx="0.00550421009964208"
-        ixy="0"
-        ixz="0"
-        iyy="0.00543503119641918"
-        iyz="-0.000690462717635347"
-        izz="0.00167462250691422" />
+        ixx="0.00550912876977144"
+        ixy="1.20738896283898E-07"
+        ixz="1.14777545987641E-07"
+        iyy="0.00543978937695506"
+        iyz="-0.000691104926187318"
+        izz="0.00167532602217647" />
     </inertial>
     <visual>
       <origin
@@ -439,8 +492,6 @@
       rpy="3.1416 1.5708 0" />
     <parent
       link="link_2" />
-    <!-- <parent
-      link="base_link" /> -->
     <child
       link="link_a1" />
     <axis
@@ -455,17 +506,17 @@
     name="link_a2">
     <inertial>
       <origin
-        xyz="0.090605416923298 0 -0.00609952306741931"
+        xyz="0.0906132048634636 -2.22194793675357E-06 -0.006103858146543"
         rpy="0 0 0" />
       <mass
-        value="1.13725613291731" />
+        value="1.13729433264412" />
       <inertia
-        ixx="0.00215009827923876"
-        ixy="0"
-        ixz="0.00254380393250188"
-        iyy="0.00820239963405526"
-        iyz="0"
-        izz="0.00725300805967666" />
+        ixx="0.00215024713436499"
+        ixy="6.89652874590534E-07"
+        ixz="0.00254427069891646"
+        iyy="0.00820340398686843"
+        iyz="-3.76822215916825E-07"
+        izz="0.00725363722798325" />
     </inertial>
     <visual>
       <origin
@@ -513,17 +564,17 @@
     name="link_a3">
     <inertial>
       <origin
-        xyz="0.0420860444220137 0 0.0309278894752134"
+        xyz="0.0420770298947195 2.39158535064732E-06 0.0309289361767082"
         rpy="0 0 0" />
       <mass
-        value="0.81274798684902" />
+        value="0.812844084223133" />
       <inertia
-        ixx="0.000704665343337443"
-        ixy="0"
-        ixz="0.000222641185973676"
-        iyy="0.00221943524795946"
-        iyz="0"
-        izz="0.00212284072119055" />
+        ixx="0.000704737938101172"
+        ixy="6.24089469369115E-08"
+        ixz="0.000222718237941791"
+        iyy="0.00221978890401713"
+        iyz="-7.15171425854216E-09"
+        izz="0.00212322267683195" />
     </inertial>
     <visual>
       <origin
@@ -571,17 +622,17 @@
     name="link_a4">
     <inertial>
       <origin
-        xyz="0 -0.0259459115704968 0.0452714391339665"
+        xyz="7.76750219255717E-07 -0.0259439953527544 0.0452763939930491"
         rpy="0 0 0" />
       <mass
-        value="0.308941204464269" />
+        value="0.308874987622185" />
       <inertia
-        ixx="0.000485737318642283"
-        ixy="0"
-        ixz="0"
-        iyy="0.000466355171348267"
-        iyz="0.000110728922271964"
-        izz="0.000234923681068276" />
+        ixx="0.000485733086722099"
+        ixy="3.08676781440756E-09"
+        ixz="-6.18132280352303E-09"
+        iyy="0.000466300023609142"
+        iyz="0.000110747347383686"
+        izz="0.000234864988215127" />
     </inertial>
     <visual>
       <origin
@@ -629,17 +680,17 @@
     name="link_a5">
     <inertial>
       <origin
-        xyz="-0.0445527751967654 0 0.0283178074848019"
+        xyz="-0.0445513312456203 9.09136003257593E-06 0.028316574521189"
         rpy="0 0 0" />
       <mass
-        value="0.691485853906912" />
+        value="0.691432370139663" />
       <inertia
-        ixx="0.00053587217476237"
-        ixy="0"
-        ixz="-0.000165180730911934"
-        iyy="0.00167662010209616"
-        iyz="0"
-        izz="0.00160760235435603" />
+        ixx="0.000535822909069584"
+        ixy="-1.28721964722775E-07"
+        ixz="-0.000165202507700496"
+        iyy="0.001676540735218"
+        iyz="5.37033230228944E-08"
+        izz="0.0016074988833998" />
     </inertial>
     <visual>
       <origin
@@ -670,7 +721,7 @@
     type="revolute">
     <origin
       xyz="0 -0.01805 0.0802"
-      rpy="1.5708 1.5708 0" />
+      rpy="-1.5708 1.5708 0" />
     <parent
       link="link_a4" />
     <child
@@ -687,17 +738,17 @@
     name="link_a6">
     <inertial>
       <origin
-        xyz="3.24059162115642E-05 -2.59128758312438E-05 0.0157071301866493"
+        xyz="3.2405855921569E-05 -2.59134551063855E-05 0.015707130991251"
         rpy="0 0 0" />
       <mass
-        value="0.147762214293587" />
+        value="0.147762234933799" />
       <inertia
-        ixx="6.82806654260406E-05"
-        ixy="0"
-        ixz="0"
-        iyy="6.73993556738908E-05"
-        iyz="0"
-        izz="0.000105059848809307" />
+        ixx="6.8092530031301E-05"
+        ixy="-3.14732636389879E-07"
+        ixz="1.13156689588023E-07"
+        iyy="6.64608114238396E-05"
+        iyz="4.37366684845203E-08"
+        izz="0.000103936894327172" />
     </inertial>
     <visual>
       <origin
@@ -745,17 +796,17 @@
     name="link_at">
     <inertial>
       <origin
-        xyz="0 0 -0.001"
+        xyz="0 -6.93889390390723E-18 -0.001"
         rpy="0 0 0" />
       <mass
         value="0.00155862265526224" />
       <inertia
-        ixx="0"
-        ixy="0"
-        ixz="0"
-        iyy="0"
-        iyz="0"
-        izz="0" />
+        ixx="9.71784989903346E-08"
+        ixy="-6.18177605636776E-41"
+        ixz="-2.82308475359692E-24"
+        iyy="9.71784989903346E-08"
+        iyz="2.4437407093716E-25"
+        izz="1.93317916210494E-07" />
     </inertial>
     <visual>
       <origin
@@ -794,150 +845,589 @@
     <axis
       xyz="0 0 0" />
   </joint>
-
-  <!-- TRANSMISSION -->
-  <transmission name="trans_w_r">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="w_r">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="w_r_motor">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-          <mechanicalReduction>50</mechanicalReduction>
-      </actuator>
-  </transmission>
-
-  <transmission name="trans_w_l">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="w_l">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="w_l_motor">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-          <mechanicalReduction>50</mechanicalReduction>
-      </actuator>
-  </transmission>
-
-  <transmission name="trans_l_1">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="l_1">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="l_1_motor">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-          <mechanicalReduction>50</mechanicalReduction>
-      </actuator>
-  </transmission>
-
-  <transmission name="trans_l_2">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="l_2">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="l_2_motor">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-          <mechanicalReduction>50</mechanicalReduction>
-      </actuator>
-  </transmission>
-
-  <transmission name="trans_l_3">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="l_3">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="l_3_motor">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-          <mechanicalReduction>50</mechanicalReduction>
-      </actuator>
-  </transmission>
-
-  <transmission name="trans_l_4">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="l_4">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="l_4_motor">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-          <mechanicalReduction>50</mechanicalReduction>
-      </actuator>
-  </transmission>
-
-  <transmission name="trans_l_a1">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="l_a1">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="l_a1_motor">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-          <mechanicalReduction>50</mechanicalReduction>
-      </actuator>
-  </transmission>
-
-  <transmission name="trans_l_a2">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="l_a2">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="l_a2_motor">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-          <mechanicalReduction>50</mechanicalReduction>
-      </actuator>
-  </transmission>
-
-  <transmission name="trans_l_a3">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="l_a3">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="l_a3_motor">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-          <mechanicalReduction>50</mechanicalReduction>
-      </actuator>
-  </transmission>
-
-  <transmission name="trans_l_a4">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="l_a4">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="l_a4_motor">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-          <mechanicalReduction>50</mechanicalReduction>
-      </actuator>
-  </transmission>
-
-  <transmission name="trans_l_a5">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="l_a5">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="l_a5_motor">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-          <mechanicalReduction>50</mechanicalReduction>
-      </actuator>
-  </transmission>
-
-  <transmission name="trans_l_a6">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="l_a6">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="l_a6_motor">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-          <mechanicalReduction>50</mechanicalReduction>
-      </actuator>
-  </transmission>
-
-  <transmission name="trans_l_at">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="l_at">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="l_at_motor">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-          <mechanicalReduction>50</mechanicalReduction>
-      </actuator>
-  </transmission>
+  <link
+    name="Camera2_Link">
+    <inertial>
+      <origin
+        xyz="-0.000143110787554801 -0.013057264464305 2.63392011492503E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.0875979434243874" />
+      <inertia
+        ixx="1.06602949918825E-05"
+        ixy="-5.78556215601082E-08"
+        ixz="8.54998727241372E-08"
+        iyy="0.000107381008142404"
+        iyz="-9.93797837095945E-09"
+        izz="0.00010643284507406" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/Camera2_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/Camera2_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="cm2_l"
+    type="fixed">
+    <origin
+      xyz="0.1257 0.011 0.0287"
+      rpy="0 0 0" />
+    <parent
+      link="link_2" />
+    <child
+      link="Camera2_Link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Radar_Link">
+    <inertial>
+      <origin
+        xyz="0 0 0.0184787735849057"
+        rpy="0 0 0" />
+      <mass
+        value="0.0693768377667744" />
+      <inertia
+        ixx="1.85319292807384E-05"
+        ixy="-5.14770404218141E-25"
+        ixz="1.39095744853425E-21"
+        iyy="1.85319292807384E-05"
+        iyz="2.01791017201619E-25"
+        izz="1.95171443604265E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/Radar_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/Radar_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="radar_l"
+    type="fixed">
+    <origin
+      xyz="0.126000000048257 0 -0.085"
+      rpy="0 0 1.5707963267949" />
+    <parent
+      link="base_link" />
+    <child
+      link="Radar_Link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Camera1_Link">
+    <inertial>
+      <origin
+        xyz="0.00233337804349315 -9.79771819231701E-15 -0.00700040239151145"
+        rpy="0 0 0" />
+      <mass
+        value="0.0115484510006475" />
+      <inertia
+        ixx="3.58630737488889E-07"
+        ixy="-4.25998015464809E-22"
+        ixz="1.15461272938505E-08"
+        iyy="4.75824187174715E-06"
+        iyz="6.35274710440725E-22"
+        izz="4.74543151710746E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/Camera1_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/Camera1_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="cm1_l"
+    type="fixed">
+    <origin
+      xyz="0.19083 0.0029992 -0.12002"
+      rpy="-0.66323 0 -1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="Camera1_Link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="pw1_Link1">
+    <inertial>
+      <origin
+        xyz="1.55159243786507E-09 -1.91786736492006E-09 0.043907311914765"
+        rpy="0 0 0" />
+      <mass
+        value="0.0336452921507346" />
+      <inertia
+        ixx="1.81877933576371E-05"
+        ixy="1.9405688175799E-12"
+        ixz="2.95478152216793E-13"
+        iyy="1.64372778181745E-05"
+        iyz="-4.40761107881898E-13"
+        izz="3.78930483297657E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw1_Link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw1_Link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pw1_1"
+    type="continuous">
+    <origin
+      xyz="-0.2125 -0.1625 -0.1964"
+      rpy="3.1416 0 1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="pw1_Link1" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pw1_Link2">
+    <inertial>
+      <origin
+        xyz="5.55111512312578E-17 -5.55111512312578E-17 2.77555756156289E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.227276040857673" />
+      <inertia
+        ixx="0.00012938374626319"
+        ixy="7.76446868316438E-23"
+        ixz="5.24453922455797E-22"
+        iyy="0.00012938374626319"
+        iyz="-3.56249724995069E-21"
+        izz="0.000158274748324804" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw1_Link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw1_Link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pw1_2"
+    type="continuous">
+    <origin
+      xyz="0 0 0.0577"
+      rpy="0 -1.5708 0" />
+    <parent
+      link="pw1_Link1" />
+    <child
+      link="pw1_Link2" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pw2_Link1">
+    <inertial>
+      <origin
+        xyz="-1.55159252113179E-09 1.9178671983866E-09 0.043907311914765"
+        rpy="0 0 0" />
+      <mass
+        value="0.0336452921507346" />
+      <inertia
+        ixx="1.81877933576371E-05"
+        ixy="1.94056881776422E-12"
+        ixz="-2.95478152490762E-13"
+        iyy="1.64372778181745E-05"
+        iyz="4.40761107646501E-13"
+        izz="3.78930483297657E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw2_Link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw2_Link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pw2_1"
+    type="continuous">
+    <origin
+      xyz="-0.2125 0.1625 -0.1964"
+      rpy="3.1416 0 1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="pw2_Link1" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pw2_Link2">
+    <inertial>
+      <origin
+        xyz="-5.55111512312578E-17 5.55111512312578E-17 -1.11022302462516E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0.227276040857673" />
+      <inertia
+        ixx="0.00012938374626319"
+        ixy="9.98793016970697E-21"
+        ixz="-5.9098770494008E-21"
+        iyy="0.00012938374626319"
+        iyz="1.63842472014806E-20"
+        izz="0.000158274748324804" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw2_Link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw2_Link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pw2_2"
+    type="continuous">
+    <origin
+      xyz="0 0 0.0577"
+      rpy="3.1416 1.5708 0" />
+    <parent
+      link="pw2_Link1" />
+    <child
+      link="pw2_Link2" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pw3_Link1">
+    <inertial>
+      <origin
+        xyz="-1.55159246562064E-09 1.9178672053255E-09 0.043907311914765"
+        rpy="0 0 0" />
+      <mass
+        value="0.0336452921507346" />
+      <inertia
+        ixx="1.81877933576371E-05"
+        ixy="1.94056881674145E-12"
+        ixz="-2.95478152166121E-13"
+        iyy="1.64372778181745E-05"
+        iyz="4.40761109278603E-13"
+        izz="3.78930483297657E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw3_Link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw3_Link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pw3_1"
+    type="continuous">
+    <origin
+      xyz="0.1125 -0.1625 -0.1964"
+      rpy="3.1416 0 1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="pw3_Link1" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pw3_Link2">
+    <inertial>
+      <origin
+        xyz="0 -1.38777878078145E-17 -5.55111512312578E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.227276040857673" />
+      <inertia
+        ixx="0.00012938374626319"
+        ixy="-8.52679833569329E-21"
+        ixz="-4.40525462088303E-21"
+        iyy="0.00012938374626319"
+        iyz="6.5413464013824E-22"
+        izz="0.000158274748324804" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw3_Link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw3_Link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pw3_2"
+    type="continuous">
+    <origin
+      xyz="0 0 0.0577"
+      rpy="3.1416 1.5708 0" />
+    <parent
+      link="pw3_Link1" />
+    <child
+      link="pw3_Link2" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pw4_Link1">
+    <inertial>
+      <origin
+        xyz="-1.55159241010949E-09 1.91786722614218E-09 0.043907311914765"
+        rpy="0 0 0" />
+      <mass
+        value="0.0336452921507346" />
+      <inertia
+        ixx="1.81877933576371E-05"
+        ixy="1.94056881697258E-12"
+        ixz="-2.95478152280767E-13"
+        iyy="1.64372778181745E-05"
+        iyz="4.407611089841E-13"
+        izz="3.78930483297657E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw4_Link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw4_Link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pw4_1"
+    type="continuous">
+    <origin
+      xyz="0.1125 0.1625 -0.1964"
+      rpy="3.1416 0 1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="pw4_Link1" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pw4_Link2">
+    <inertial>
+      <origin
+        xyz="0 -3.46944695195361E-17 -5.55111512312578E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.227276040857673" />
+      <inertia
+        ixx="0.00012938374626319"
+        ixy="-5.22336984140152E-21"
+        ixz="-4.89050422630819E-21"
+        iyy="0.00012938374626319"
+        iyz="4.93991300537734E-21"
+        izz="0.000158274748324804" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw4_Link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka_lumi_description/meshes/pw4_Link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pw4_2"
+    type="continuous">
+    <origin
+      xyz="0 0 0.0577"
+      rpy="3.1416 1.5708 0" />
+    <parent
+      link="pw4_Link1" />
+    <child
+      link="pw4_Link2" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
 
   <!-- Gazebo Control Plugin-->
   <gazebo>
