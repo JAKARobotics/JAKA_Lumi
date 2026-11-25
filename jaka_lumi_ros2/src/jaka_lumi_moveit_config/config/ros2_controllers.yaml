@@ -9,9 +9,6 @@ controller_manager:
     jaka_lumi_minicobo_arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
-    # jaka_lumi_agv_controller:
-    #   type: joint_trajectory_controller/JointTrajectoryController
-
     jaka_lumi_full_robot_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
@@ -44,16 +41,6 @@ jaka_lumi_minicobo_arm_controller:
     state_interfaces:
       - position
       - velocity
-# jaka_lumi_agv_controller:
-#   ros__parameters:
-#     joints:
-#       - w_r
-#       - w_l
-#     command_interfaces:
-#       - position
-#     state_interfaces:
-#       - position
-#       - velocity
 
 jaka_lumi_full_robot_controller:
   ros__parameters:

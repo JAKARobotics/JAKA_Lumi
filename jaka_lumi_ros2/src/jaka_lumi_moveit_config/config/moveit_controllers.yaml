@@ -6,7 +6,6 @@ moveit_simple_controller_manager:
   controller_names:
     - jaka_lumi_body_controller
     - jaka_lumi_minicobo_arm_controller
-    # - jaka_lumi_agv_controller
     - jaka_lumi_full_robot_controller
 
   jaka_lumi_body_controller:
@@ -29,13 +28,6 @@ moveit_simple_controller_manager:
       - l_a4
       - l_a5
       - l_a6
-  # jaka_lumi_agv_controller:
-  #   type: FollowJointTrajectory
-  #   action_ns: follow_joint_trajectory
-  #   # default: true
-  #   joints:
-  #     - w_r
-  #     - w_l
 
   jaka_lumi_full_robot_controller:
     type: FollowJointTrajectory
